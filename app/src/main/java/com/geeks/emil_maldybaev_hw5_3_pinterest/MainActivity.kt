@@ -4,6 +4,8 @@ import android.net.DnsResolver.Callback
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.geeks.emil_maldybaev_hw5_3_pinterest.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Response
@@ -19,6 +21,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         initClickers()
         binding.recyclerView.adapter = adapter
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+
+                if (lastVisibleItemPosition == recyclerView.adapter!!.itemCount - 1) {
+                    page++
+                    binding.getImages(page)
+                }
+            }
+        })
+
 
     }
 
